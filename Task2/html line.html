@@ -1,0 +1,21 @@
+
+<html>
+        <head>
+          <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+          <script>      
+            function init() {
+              var stage = new createjs.Stage("paper");
+              var line = new createjs.Graphic();
+              line.beginStroke("DeepSkyBlue");
+              line.moveTo(0,0);
+              line.lineTo(100,100);
+
+
+              stage.update;
+            }
+          </script>
+        </head>
+        <body onload="init();">
+          <canvas id="paper" width="500" height="200"></canvas>
+        </body>
+      </html>

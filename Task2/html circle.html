@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Hello D. again.</title>
+<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+    <script>
+            function blab() {
+                var stage = new createjs.Stage("paper");
+                var circle = new createjs.Shape();
+                circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+                circle.x = 100;
+                circle.y = 100;
+                stage.addChild(circle);
+                stage.update();
+            }
+           
+            </script>
+</head>
+<body onload="blab();">
+    <canvas id="paper" width="500" length="200"></canvas>
+    
+</body>
+</html>
