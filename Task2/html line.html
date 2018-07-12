@@ -5,18 +5,24 @@
           <script>      
             function init() {
               var stage = new createjs.Stage("paper");
-              var line = new createjs.Graphic();
-              line.beginStroke("DeepSkyBlue");
-              line.graphics.moveTo(0,0);
-              line.graphics.lineTo(100,100);
-              line.graphics.endStroke;
-
-              stage.addChild("line");
-              stage.update;
+              
+              var t = new createjs.Shape();
+              t.graphics.beginStroke("DeepSkyBlue");
+              t.graphics.moveTo(0,0);
+              t.graphics.lineTo(1000,1000);
+              t.graphics.endStroke();
+              stage.addChild(t);
+              var q = new createjs.Shape();
+              q.graphics.beginStroke("Red");
+              q.graphics.moveTo(0,100);
+              q.graphics.lineTo(200,0);
+              q.graphics.endStroke();
+              stage.addChild(q);
+              stage.update();
             }
           </script>
         </head>
         <body onload="init();">
           <canvas id="paper" width="500" height="200"></canvas>
         </body>
-      </html>
+ </html>
