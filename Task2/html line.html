@@ -7,10 +7,11 @@
               var stage = new createjs.Stage("paper");
               var line = new createjs.Graphic();
               line.beginStroke("DeepSkyBlue");
-              line.moveTo(0,0);
-              line.lineTo(100,100);
+              line.graphics.moveTo(0,0);
+              line.graphics.lineTo(100,100);
+              line.graphics.endStroke;
 
-
+              stage.addChild("line");
               stage.update;
             }
           </script>
