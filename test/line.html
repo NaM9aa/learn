@@ -1,0 +1,58 @@
+<html>
+
+<head>
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- createjs -->
+  <script src="../node_modules/createjs/builds/createjs-2015.11.26.min.js"></script>
+  <!-- vue -->
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="paper" width="500" height="500"></canvas>
+    <form class="form-inline">
+      <label class="sr-only">Start Point</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(x)" v-model="point1.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(y)" v-model="point1.y">
+      <label class="sr-only">End Point</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(x)" v-model="point2.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(y)" v-model="point2.y">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine">Draw Line</button>
+    </form>
+  </div>
+
+  <script>     
+    var app = new Vue({
+      el: '#app',
+      data: {
+        point1: { x: 0, y: 0 },
+        point2: { x: 100, y: 100 }
+      },
+      methods: {
+        drawLine: function () {
+          //create canvas
+          var stage = new createjs.Stage("paper");
+          //create line
+          var line = new createjs.Shape();
+          //begin drawing with specified color
+          line.graphics.beginStroke("DeepSkyBlue");
+          //specify the start point
+          line.graphics.moveTo(this.point1.x, this.point1.y);
+          //draw a line
+          line.graphics.lineTo(this.point2.x, this.point2.y);
+          //finish drawing
+          line.graphics.endStroke();
+          //add line to the canvas
+          stage.addChild(line);
+          //refresh the canvas
+          stage.update();
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
