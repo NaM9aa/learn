@@ -1,0 +1,24 @@
+{
+  "name": "learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "b.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamforrest/learn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamforrest/learn/issues"
+  },
+  "homepage": "https://github.com/iamforrest/learn#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.2",
+    "createjs": "^1.0.1",
+    "vue": "^2.5.16"
+  }
+}
