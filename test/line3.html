@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- createjs -->
+  <script src="../node_modules/createjs/builds/createjs-2015.11.26.min.js"></script>
+  <!-- vue -->
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="paper" width="500" height="500"></canvas>
+    <form class="form-inline">
+      <label class="sr-only">Start Point</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(x)" v-model="point1.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(y)" v-model="point1.y">
+      <label class="sr-only">End Point</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(x)" v-model="point2.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(y)" v-model="point2.y">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine">Draw Blue Line</button><br>
+
+      <label class="sr-only">Start Point2</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point2(x)" v-model="point3.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point2(y)" v-model="point3.y">
+      <label class="sr-only">End Point2</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point2(x)" v-model="point4.x">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point2(y)" v-model="point4.y">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine2">Draw Red Line</button>
+    </form>
+  </div>
+
+  <script>     
+    var app = new Vue({
+      el: '#app',
+      data: {
+        var stage = new createjs.Stage("paper"),
+        point1: { x: 0, y: 0 },
+        point2: { x: 100, y: 100 },
+        point3: { x: 0, y: 100 },
+        point4: { x: 100, y: 200},
+      },
+      methods: {
+
+        upadate
+
+        drawLine: function () {
+          var line1 = new createjs.Shape();
+          //var stage = new createjs.Stage("paper");
+          line1.graphics.beginStroke("DeepSkyBlue");
+
+          line1.graphics.moveTo(this.point1.x, this.point1.y);
+          line1.graphics.lineTo(this.point2.x, this.point2.y);
+          line1.graphics.endStroke();
+          stage.addChild(line1);
+
+          stage.update();
+        }
+
+
+        ,drawLine2: function () {
+          //var line1 = new createjs.Shape();
+          var line2 = new createjs.Shape();
+          //var stage = new createjs.Stage("paper");
+          //line1.graphics.beginStroke("DeepSkyBlue");
+          line2.graphics.beginStroke("Red");
+
+          //line1.graphics.moveTo(this.point1.x, this.point1.y);
+          //line1.graphics.lineTo(this.point2.x, this.point2.y);
+          //line1.graphics.endStroke();
+          line2.graphics.moveTo(this.point3.x, this.point3.y);
+          line2.graphics.lineTo(this.point4.x, this.point4.y);
+          line2.graphics.endStroke();
+          stage.addChild(line1);
+
+          stage.update();
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
