@@ -32,23 +32,26 @@
     </form>
   </div>
 
-  <script>     
+  <script> 
+
     var app = new Vue({
       el: '#app',
-      data: {
-        var stage = new createjs.Stage("paper"),
+
+        data: {
         point1: { x: 0, y: 0 },
         point2: { x: 100, y: 100 },
         point3: { x: 0, y: 100 },
         point4: { x: 100, y: 200},
+        //stage: null,
+      },
+      created: function(){
+        var stage = new createjs.Stage("paper");
+
       },
       methods: {
 
-        upadate
-
         drawLine: function () {
           var line1 = new createjs.Shape();
-          //var stage = new createjs.Stage("paper");
           line1.graphics.beginStroke("DeepSkyBlue");
 
           line1.graphics.moveTo(this.point1.x, this.point1.y);
@@ -57,23 +60,18 @@
           stage.addChild(line1);
 
           stage.update();
-        }
+        },
 
 
-        ,drawLine2: function () {
-          //var line1 = new createjs.Shape();
+        drawLine2: function () {
+          var stage = new createjs.Stage("paper");
           var line2 = new createjs.Shape();
-          //var stage = new createjs.Stage("paper");
-          //line1.graphics.beginStroke("DeepSkyBlue");
           line2.graphics.beginStroke("Red");
 
-          //line1.graphics.moveTo(this.point1.x, this.point1.y);
-          //line1.graphics.lineTo(this.point2.x, this.point2.y);
-          //line1.graphics.endStroke();
           line2.graphics.moveTo(this.point3.x, this.point3.y);
           line2.graphics.lineTo(this.point4.x, this.point4.y);
           line2.graphics.endStroke();
-          stage.addChild(line1);
+          stage.addChild(line2);
 
           stage.update();
         }
