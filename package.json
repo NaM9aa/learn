@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "^4.1.2",
     "createjs": "^1.0.1",
+    "jquery": "^3.3.1",
     "vue": "^2.5.16"
   }
 }
