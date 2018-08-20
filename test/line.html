@@ -1,58 +1,135 @@
 <html>
 
 <head>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- createjs -->
   <script src="../node_modules/createjs/builds/createjs-2015.11.26.min.js"></script>
   <!-- vue -->
   <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <!-- geojs -->
+  <script src="../lib/geojs.js"></script>
+
+  <style>
+    #coordsTT {
+      position: absolute;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
-    <canvas id="paper" width="500" height="500"></canvas>
+    <canvas id="paper" width="800" height="500" style="border: 1px solid #000" onmousemove="showCoords(event)" outmouse="hideCoords()"></canvas>
+    <i id="coordsTT" data-toggle="tooltip" data-placement="right" data-animation="false" data-trigger="manual">
+    </i>
     <form class="form-inline">
       <label class="sr-only">Start Point</label>
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(x)" v-model="point1.x">
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(y)" v-model="point1.y">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(x1)" v-model="x1">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(y1)" v-model="y1">
       <label class="sr-only">End Point</label>
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(x)" v-model="point2.x">
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(y)" v-model="point2.y">
-      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine">Draw Line</button>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(x2)" v-model="x2">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(y2)" v-model="y2">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine">Draw Blue Line</button>
     </form>
+    <form class="form-inline">
+      <label class="sr-only">Start Point2</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point2(x3)" v-model="x3">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point2(y3)" v-model="y3">
+      <label class="sr-only">End Point2</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point2(x4)" v-model="x4">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point2(y4)" v-model="y4">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine2">Draw Red Line</button>
+    </form>
+    <br>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="clear">Clear</button>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="calculate">Calculate</button>
+    <p>
+      line1: {{x1}}, {{y1}}, {{x2}}, {{y2}}
+      <br> line2: {{x3}}, {{y3}}, {{x4}}, {{y4}}
+      <br> result: {{intersection.x}}, {{intersection.y}}
+    </p>
   </div>
 
-  <script>     
+  <script>
     var app = new Vue({
       el: '#app',
       data: {
-        point1: { x: 0, y: 0 },
-        point2: { x: 100, y: 100 }
+        x1: 100,
+        y1: 100,
+        x2: 400,
+        y2: 400,
+        x3: 400,
+        y3: 100,
+        x4: 100,
+        y4: 400,
+        stage: null,
+        line1: null,
+        line2: null,
+        intersection: {}
+      },
+      mounted: function () {
+        this.stage = new createjs.Stage("paper");
       },
       methods: {
         drawLine: function () {
-          //create canvas
-          var stage = new createjs.Stage("paper");
-          //create line
-          var line = new createjs.Shape();
-          //begin drawing with specified color
-          line.graphics.beginStroke("DeepSkyBlue");
-          //specify the start point
-          line.graphics.moveTo(this.point1.x, this.point1.y);
-          //draw a line
-          line.graphics.lineTo(this.point2.x, this.point2.y);
-          //finish drawing
-          line.graphics.endStroke();
-          //add line to the canvas
-          stage.addChild(line);
-          //refresh the canvas
-          stage.update();
+          if (this.line1 != null) {
+            this.stage.removeChild(this.line1);
+          }
+          this.line1 = new createjs.Shape();
+          this.line1.graphics.beginStroke("DeepSkyBlue");
+
+          this.line1.graphics.moveTo(this.x1, this.y1);
+          this.line1.graphics.lineTo(this.x2, this.y2);
+          this.line1.graphics.endStroke();
+          this.stage.addChild(this.line1);
+
+          this.stage.update();
+        },
+
+
+        drawLine2: function () {
+          if (this.line2 != null) {
+            this.stage.removeChild(this.line2);
+          }
+          this.line2 = new createjs.Shape();
+          this.line2.graphics.beginStroke("Red");
+
+          this.line2.graphics.moveTo(this.x3, this.y3);
+          this.line2.graphics.lineTo(this.x4, this.y4);
+          this.line2.graphics.endStroke();
+          this.stage.addChild(this.line2);
+
+          this.stage.update();
+        },
+
+        clear: function () {
+          this.stage.removeAllChildren();
+          this.stage.update();
+        },
+
+        calculate: function () {
+          this.intersection = geojs.intersect(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3, this.x4, this.y4);
         }
       }
     });
+
+    function showCoords(event) {
+      var x = event.clientX;
+      var y = event.clientY;
+      var coords = x + ',' + y;
+      document.getElementById("coordsTT").innerHTML = coords;
+    }
+
+    $("#paper").on('mousemove', function (e) {
+      $("#coordsTT").css({ top: e.pageY, left: e.pageX });
+      $('[data-toggle="tooltip"]').tooltip('show')
+    })
+    $("#paper").on('mouseleave', function (e) {
+      $('[data-toggle="tooltip"]').tooltip('hide')
+    })
+
+
   </script>
 </body>
-
-</html>
