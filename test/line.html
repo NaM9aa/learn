@@ -48,7 +48,7 @@
     <p>
       line1: {{x1}}, {{y1}}, {{x2}}, {{y2}}
       <br> line2: {{x3}}, {{y3}}, {{x4}}, {{y4}}
-      <br> result: {{intersection.x}}, {{intersection.y}}
+      <p id="mess"></p>
     </p>
   </div>
 
@@ -79,49 +79,45 @@
           }
           this.line1 = new createjs.Shape();
           this.line1.graphics.beginStroke("DeepSkyBlue");
-
           this.line1.graphics.moveTo(this.x1, this.y1);
           this.line1.graphics.lineTo(this.x2, this.y2);
           this.line1.graphics.endStroke();
           this.stage.addChild(this.line1);
-
           this.stage.update();
         },
-
-
         drawLine2: function () {
           if (this.line2 != null) {
             this.stage.removeChild(this.line2);
           }
           this.line2 = new createjs.Shape();
           this.line2.graphics.beginStroke("Red");
-
           this.line2.graphics.moveTo(this.x3, this.y3);
           this.line2.graphics.lineTo(this.x4, this.y4);
           this.line2.graphics.endStroke();
           this.stage.addChild(this.line2);
-
           this.stage.update();
         },
-
         clear: function () {
           this.stage.removeAllChildren();
           this.stage.update();
         },
-
         calculate: function () {
+          if((this.y2 - this.y1) / (this.x2 - this.x1) == (this.y4 - this.y3) / (this.x4 - this.x3)) {
+            document.getElementById("mess").innerHTML = 'none';
+          }
+          else{
           this.intersection = geojs.intersect(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3, this.x4, this.y4);
+          document.getElementById("mess").innerHTML = this.intersection.x + ' , ' + this.intersection.y;
+          }
         }
       }
     });
-
     function showCoords(event) {
       var x = event.clientX;
       var y = event.clientY;
       var coords = x + ',' + y;
       document.getElementById("coordsTT").innerHTML = coords;
     }
-
     $("#paper").on('mousemove', function (e) {
       $("#coordsTT").css({ top: e.pageY, left: e.pageX });
       $('[data-toggle="tooltip"]').tooltip('show')
@@ -129,7 +125,5 @@
     $("#paper").on('mouseleave', function (e) {
       $('[data-toggle="tooltip"]').tooltip('hide')
     })
-
-
   </script>
 </body>
