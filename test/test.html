@@ -29,36 +29,27 @@
     var app = new Vue({
       el: '#app',
       data: {
-        x1: 214, 
-        y1: 236,
-        x2: 567,
-        y2: 300,
-        x3: 200,
-        y3: 100,
-        x4: 560,
-        y4: 430,
-
-        x01: 100, 
-        y01: 100,
-        x02: 400,
-        y02: 400,
-        x03: 400,
-        y03: 100,
-        x04: 100,
-        y04: 400,
+        x1: null, 
+        y1: null,
+        x2: null,
+        y2: null,
+        x3: null,
+        y3: null,
+        x4: null,
+        y4: null,
         
         //crX: null,
         //crY: null,
       },
       methods: {
        calculate: function () {
-            cRX = (this.x01  - this.y01 - this.x03 * (this.y04 - this.y03)/(this.x04 - this.x03) + this.x01 * (this.y02 - this.y01)/(this.x02 - this.x01)) / ((this.y02 - this.y01)/(this.x02 - this.x01) - (this.y04 - this.y03)/(this.x04 - this.x03));
-            cRY = (this.y02 - this.y01) / (this.x02 - this.x01) * (this.y03 - this.x03 * (this.y04 - this.y03) / (this.x04 - this.x03) - this.y01 + this.x01 * (this.y02 - this.y01) / (this.x02 - this.x01)) / ((this.y02 - this.y01) / (this.x02 - this.x01) - (this.y04 - this.y03) / (this.x04 - this.x03)) + this.y01 - this.x01 * (this.y02 - this.y01) / (this.x02 - this.x01);
+            var cRX = (this.x01  - this.y01 - this.x03 * (this.y04 - this.y03)/(this.x04 - this.x03) + this.x01 * (this.y02 - this.y01)/(this.x02 - this.x01)) / ((this.y02 - this.y01)/(this.x02 - this.x01) - (this.y04 - this.y03)/(this.x04 - this.x03));
+            var cRY = (this.y02 - this.y01) / (this.x02 - this.x01) * (this.y03 - this.x03 * (this.y04 - this.y03) / (this.x04 - this.x03) - this.y01 + this.x01 * (this.y02 - this.y01) / (this.x02 - this.x01)) / ((this.y02 - this.y01) / (this.x02 - this.x01) - (this.y04 - this.y03) / (this.x04 - this.x03)) + this.y01 - this.x01 * (this.y02 - this.y01) / (this.x02 - this.x01);
             
 
-            crX = (this.y3  - this.y1 - this.x3 * (this.y4 - this.y3)/(this.x4 - this.x3) + this.x1 * (this.y2 - this.y1)/(this.x2 - this.x1)) / ((this.y2 - this.y1)/(this.x2 - this.x1) - (this.y4 - this.y3)/(this.x4 - this.x3));
-            crY = (this.y2 - this.y1) / (this.x2 - this.x1) * (this.y3 - this.x3 * (this.y4 - this.y3) / (this.x4 - this.x3) - this.y1 + this.x1 * (this.y2 - this.y1) / (this.x2 - this.x1)) / ((this.y2 - this.y1) / (this.x2 - this.x1) - (this.y4 - this.y3) / (this.x4 - this.x3)) + this.y1 - this.x1 * (this.y2 - this.y1) / (this.x2 - this.x1);
-            document.getElementById("crXY").innerHTML = crX + ' , ' + crY + ' ' + cRX + ',' + cRY;
+            //var crX = (this.y3  - this.y1 - this.x3 * (this.y4 - this.y3)/(this.x4 - this.x3) + this.x1 * (this.y2 - this.y1)/(this.x2 - this.x1)) / ((this.y2 - this.y1)/(this.x2 - this.x1) - (this.y4 - this.y3)/(this.x4 - this.x3));
+            //var crY = (this.y2 - this.y1) / (this.x2 - this.x1) * (this.y3 - this.x3 * (this.y4 - this.y3) / (this.x4 - this.x3) - this.y1 + this.x1 * (this.y2 - this.y1) / (this.x2 - this.x1)) / ((this.y2 - this.y1) / (this.x2 - this.x1) - (this.y4 - this.y3) / (this.x4 - this.x3)) + this.y1 - this.x1 * (this.y2 - this.y1) / (this.x2 - this.x1);
+            document.getElementById("crXY").innerHTML = crX + ' , ' + crY;
            
             
           
