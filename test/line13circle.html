@@ -1,0 +1,116 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- createjs -->
+  <script src="../node_modules/createjs/builds/createjs-2015.11.26.min.js"></script>
+  <!-- vue -->
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <!-- geojs -->
+  <script src="../lib/geojs.js"></script>
+
+  <style>
+    #coordsTT {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="paper" width="800" height="500" style="border: 1px solid #000" onmousemove="showCoords(event)" outmouse="hideCoords()"></canvas>
+    <i id="coordsTT" data-toggle="tooltip" data-placement="right" data-animation="false" data-trigger="manual">
+    </i>
+    <form class="form-inline">
+      <label class="sr-only">Circle</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="center(x)" v-model="cx">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="center(y)" v-model="cy">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="radius" v-model="r">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawTriangle">Draw Circle</button>
+    </form>
+    <form class="form-inline">
+      <label class="sr-only">Line</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(x1)" v-model="lx1">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="start point(y1)" v-model="ly1">
+      <label class="sr-only">End Point</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(x2)" v-model="lx2">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="end point(y2)" v-model="ly2">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawLine">Draw Line</button>
+    </form>
+    <br>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="clear">Clear</button>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="calculate">Calculate</button>
+    <p>{{intersection.mess}}</p>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        cx: 70,
+        cy: 100,
+        r: 50,
+        lx1: 100,
+        ly1: 100,
+        lx2: 450,
+        ly2: 160,
+
+        stage: null,
+        circle: null,
+        line: null,
+
+
+        intersection: {}
+      },
+      mounted: function () {
+        this.stage = new createjs.Stage("paper");
+      },
+      methods: {
+        drawTriangle: function () {
+          if (this.circle != null) {
+            this.stage.removeChild(this.circle);
+          }
+          this.circle = new createjs.Shape();
+          this.circle.graphics.beginStroke("DeepSkyBlue").drawCircle(this.cx, this.cy, this.r);
+          this.stage.addChild(this.circle);
+          this.stage.update();
+        },
+        drawLine: function () {
+          if (this.line != null) {
+            this.stage.removeChild(this.line);
+          }
+          this.line = new createjs.Shape();
+          this.line.graphics.beginStroke("Red");
+          this.line.graphics.moveTo(this.lx1, this.ly1);
+          this.line.graphics.lineTo(this.lx2, this.ly2);
+          this.line.graphics.endStroke();
+          this.stage.addChild(this.line);
+          this.stage.update();
+        },
+        clear: function () {
+          this.stage.removeAllChildren();
+          this.stage.update();
+        },
+        calculate: function () {
+          this.intersection = geojs.intersectWithCircle2(this.lx1, this.ly1, this.lx2, this.ly2, this.cx, this.cy, this.r);
+        }
+      }
+    });
+    function showCoords(event) {
+      var x = event.clientX;
+      var y = event.clientY;
+      var coords = x + ',' + y;
+      document.getElementById("coordsTT").innerHTML = coords;
+    }
+    $("#paper").on('mousemove', function (e) {
+      $("#coordsTT").css({ top: e.pageY, left: e.pageX });
+      $('[data-toggle="tooltip"]').tooltip('show')
+    })
+    $("#paper").on('mouseleave', function (e) {
+      $('[data-toggle="tooltip"]').tooltip('hide')
+    })
+  </script>
+</body>
