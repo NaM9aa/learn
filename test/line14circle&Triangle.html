@@ -1,0 +1,120 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- createjs -->
+  <script src="../node_modules/createjs/builds/createjs-2015.11.26.min.js"></script>
+  <!-- vue -->
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <!-- geojs -->
+  <script src="../lib/geojs.js"></script>
+
+  <style>
+    #coordsTT {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="paper" width="800" height="500" style="border: 1px solid #000" onmousemove="showCoords(event)" outmouse="hideCoords()"></canvas>
+    <i id="coordsTT" data-toggle="tooltip" data-placement="right" data-animation="false" data-trigger="manual">
+    </i>
+    <form class="form-inline">
+      <label class="sr-only">Circle</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="center(x)" v-model="cx">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="center(y)" v-model="cy">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="radius" v-model="r">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawCircle">Draw Circle</button>
+    </form>
+    <form class="form-inline">
+      <label class="sr-only">Point1</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point1(x)" v-model="tx1">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point1(y)" v-model="ty1">
+      <label class="sr-only">Point2</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point2(x)" v-model="tx2">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point2(x)" v-model="ty2">
+      <label class="sr-only">Point3</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point3(x)" v-model="tx3">
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="point3(x)" v-model="ty3">
+      <button type="button" class="btn btn-primary mb-2" v-on:click="drawTriangle">Draw Triangle</button>
+    </form>
+    <br>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="clear">Clear</button>
+    <button type="button" class="btn btn-primary mb-2" v-on:click="calculate">Calculate</button>
+    <p>{{intersection.mess}}</p>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        cx: 70,
+        cy: 100,
+        r: 50,
+        tx1: 200,
+        ty1: 100,
+        tx2: 400,
+        ty2: 400,
+        tx3: 100,
+        ty3: 200,
+
+        stage: null,
+        circle: null,
+        triangle: null,
+
+
+        intersection: {}
+      },
+      mounted: function () {
+        this.stage = new createjs.Stage("paper");
+      },
+      methods: {
+        drawCircle: function () {
+          if (this.circle != null) {
+            this.stage.removeChild(this.circle);
+          }
+          this.circle = new createjs.Shape();
+          this.circle.graphics.beginStroke("DeepSkyBlue").drawCircle(this.cx, this.cy, this.r);
+          this.stage.addChild(this.circle);
+          this.stage.update();
+        },
+        drawTriangle: function () {
+          if (this.triangle != null) {
+            this.stage.removeChild(this.triangle);
+          }
+          this.triangle = new createjs.Shape();
+          this.triangle.graphics.beginStroke("Red");
+          this.triangle.graphics.moveTo(this.tx1, this.ty1).lineTo(this.tx2, this.ty2).lineTo(this.tx3, this.ty3).lineTo(this.tx1, this.ty1);
+          this.triangle.graphics.endStroke();
+          this.stage.addChild(this.triangle);
+          this.stage.update();
+        },
+        clear: function () {
+          this.stage.removeAllChildren();
+          this.stage.update();
+        },
+        calculate: function () {
+          this.intersection = geojs.intersectWithCircleAndTriangle(this.tx1, this.ty1, this.tx2, this.ty2, this.tx3, this.ty3, this.cx, this.cy, this.r);
+        }
+      }
+    });
+    function showCoords(event) {
+      var x = event.clientX;
+      var y = event.clientY;
+      var coords = x + ',' + y;
+      document.getElementById("coordsTT").innerHTML = coords;
+    }
+    $("#paper").on('mousemove', function (e) {
+      $("#coordsTT").css({ top: e.pageY, left: e.pageX });
+      $('[data-toggle="tooltip"]').tooltip('show')
+    })
+    $("#paper").on('mouseleave', function (e) {
+      $('[data-toggle="tooltip"]').tooltip('hide')
+    })
+  </script>
+</body>
